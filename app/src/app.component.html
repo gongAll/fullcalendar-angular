@@ -9,3 +9,10 @@
     <b>{{ arg.event.title }}</b> - {{ arg.event.start.getDate() }}
   </ng-template>
 </full-calendar>
+
+<ng-template #someCellTemplate let-arg>
+  <b>{{ arg.resource.title }}</b> works!
+</ng-template>
+<ng-template #someHeaderTemplate>
+  header works!
+</ng-template>

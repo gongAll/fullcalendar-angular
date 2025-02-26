@@ -1,12 +1,14 @@
 <offscreen-fragment>
-  <transport-container *ngFor="let customRendering of customRenderings; trackBy:trackCustomRendering"
-    [inPlaceOf]="customRendering.containerEl"
-    [reportEl]="customRendering.reportNewContainerEl"
-    [elTag]="customRendering.elTag"
-    [elClasses]="customRendering.elClasses"
-    [elStyle]="customRendering.elStyle"
-    [elAttrs]="customRendering.elAttrs"
-    [template]="templateMap[customRendering.generatorName]!"
-    [renderProps]="customRendering.renderProps"
+  <transport-container *ngFor='let customRendering of customRenderings; trackBy:trackCustomRendering'
+                       [inPlaceOf]='customRendering.containerEl'
+                       [reportEl]='customRendering.reportNewContainerEl'
+                       [elTag]='customRendering.elTag'
+                       [elClasses]='customRendering.elClasses'
+                       [elStyle]='customRendering.elStyle'
+                       [elAttrs]='customRendering.elAttrs'
+                       [renderProps]='customRendering.renderProps'
+                       [template]='customRendering.generatorMeta'
   ></transport-container>
+  <!-- line not working -->
+  <!-- [template]="templateMap[customRendering.generatorName]!" -->
 </offscreen-fragment>
