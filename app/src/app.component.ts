@@ -1,7 +1,6 @@
 import { AfterViewInit, Component, forwardRef, TemplateRef, ViewChild } from '@angular/core';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { Calendar, CalendarOptions, EventClickArg } from '@fullcalendar/core';
-import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin, { DateClickArg, EventDragStopArg } from '@fullcalendar/interaction';
 import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 
@@ -12,8 +11,6 @@ import resourceTimelinePlugin from '@fullcalendar/resource-timeline';
 })
 export class AppComponent implements AfterViewInit {
   calendarOptions?: CalendarOptions;
-
-  eventsModel: any;
 
   @ViewChild('fullcalendar') fullcalendar?: FullCalendarComponent;
 
@@ -26,21 +23,21 @@ export class AppComponent implements AfterViewInit {
     forwardRef(() => Calendar);
 
     this.calendarOptions = {
-      plugins: [dayGridPlugin, interactionPlugin, resourceTimelinePlugin],
+      plugins: [interactionPlugin, resourceTimelinePlugin],
       editable: true,
       initialView: 'resourceTimelineMonth',
       customButtons: {
         myCustomButton: {
-          text: 'custom!',
-          click: function () {
-            alert('clicked the custom button!');
+          text: 'toggle resources and events!',
+          click: () => {
+            this.toggleResourcesEvents();
           },
         },
       },
       headerToolbar: {
         left: 'prev,next today myCustomButton',
         center: 'title',
-        right: 'dayGridMonth',
+        right: '',
       },
       dateClick: this.handleDateClick.bind(this),
       eventClick: this.handleEventClick.bind(this),
@@ -66,27 +63,38 @@ export class AppComponent implements AfterViewInit {
     console.log(arg);
   }
 
-  updateHeader() {
-    this.calendarOptions!.headerToolbar = {
-      left: 'prev,next myCustomButton',
-      center: 'title',
-      right: '',
-    };
-  }
-
-  updateEvents() {
+  toggleResourcesEvents() {
     const nowDate = new Date();
-    const yearMonth = nowDate.getUTCFullYear() + '-' + (nowDate.getUTCMonth() + 1);
+    const yearMonth = nowDate.getUTCFullYear() + '-' + (nowDate.getUTCMonth() + 1).toString().padStart(2, '0');
 
-    this.calendarOptions!.resources = [{
-      title: 'Updated Event',
-      id: '1',
-    }];
-    this.calendarOptions!.events = [{
-      title: 'Updated Event',
-      start: yearMonth + '-08',
-      end: yearMonth + '-10',
-      resourceId: '1',
-    }];
+    const add = this.fullcalendar?.getApi().getResources().length === 0;
+
+    if (add) {
+      this.fullcalendar?.getApi().addResource({
+        title: 'Updated Event',
+        id: '1',
+      });
+      this.fullcalendar?.getApi().addResource({
+        title: 'Updated Event 2',
+        id: '2',
+      });
+
+      this.fullcalendar?.getApi().addEvent({
+        title: 'Updated Event',
+        start: yearMonth + '-08',
+        end: yearMonth + '-10',
+        resourceId: '1',
+      });
+
+      this.fullcalendar?.getApi().addEvent({
+        title: 'Updated Event 2',
+        start: yearMonth + '-18',
+        end: yearMonth + '-20',
+        resourceId: '2',
+      });
+    } else {
+      this.fullcalendar?.getApi().getResources().forEach(resource => resource.remove());
+      this.fullcalendar?.getApi().removeAllEvents();
+    }
   }
 }

@@ -1,12 +1,10 @@
-<button (click)="updateHeader()" id="updateHeader">Update header</button>
-<button (click)="updateEvents()" id="updateEvents">Update events</button>
 <full-calendar
-  *ngIf="calendarOptions"
+  *ngIf='calendarOptions'
   #fullcalendar
-  [options]="calendarOptions"
+  [options]='calendarOptions'
 >
   <ng-template #eventContent let-arg>
-    <b>{{ arg.event.title }}</b> - {{ arg.event.start.getDate() }}
+    <b>{{ arg.event.title }}</b> - {{ arg.event.start.getDate() }} works!
   </ng-template>
 </full-calendar>
 
